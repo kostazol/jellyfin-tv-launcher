@@ -67,6 +67,7 @@
   var httpCancelButton = document.getElementById('http-cancel-button');
   var httpContinueButton = document.getElementById('http-continue-button');
   var splashFinished = false;
+  var startupInterrupted = false;
   var savedServerUrl = readSavedServerUrl();
   var pendingHttpServerUrl = '';
 
@@ -280,11 +281,12 @@
       savedServerUrl = normalizeServerUrl(savedServerUrl);
       if (isHttpOnSecurePage(savedServerUrl)) {
         checkComplete = true;
+        checkSuccess = true;
       } else {
         checkServer(savedServerUrl, function (success) {
           checkComplete = true;
           checkSuccess = success;
-          if (splashFinished) {
+          if (splashFinished && !startupInterrupted) {
             finishStartup(checkSuccess);
           }
         });
@@ -293,6 +295,10 @@
 
     window.setTimeout(function () {
       splashFinished = true;
+      if (startupInterrupted) {
+        return;
+      }
+
       if (checkComplete) {
         finishStartup(checkSuccess);
       } else {
@@ -347,6 +353,16 @@
     setLoading(true);
     saveServerUrl(pendingHttpServerUrl);
     openServer(pendingHttpServerUrl);
+  });
+
+  document.addEventListener('keydown', function (event) {
+    if (splashFinished || !savedServerUrl || !isHttpOnSecurePage(savedServerUrl)) {
+      return;
+    }
+
+    event.preventDefault();
+    startupInterrupted = true;
+    showConnectionForm(false);
   });
 
   beginStartup();
