@@ -1,6 +1,50 @@
 (function () {
   'use strict';
 
+  var translations = {
+    en: {
+      startingJellyfin: 'Starting Jellyfin',
+      checkingJellyfinServer: 'Checking Jellyfin server',
+      jellyfin: 'Jellyfin',
+      serverAddress: 'Server address',
+      connect: 'Connect',
+      jellyfinServerUnavailable: 'Jellyfin server is unavailable',
+      checkServerAddress: 'Check the server address and try again.',
+      savedServerUnavailable: 'Could not reach this Jellyfin server. It may be offline, blocked by CORS, or use an invalid address.',
+      enterServerAddress: 'Enter your Jellyfin server address.',
+      requiresHttps: 'This launcher requires an HTTPS Jellyfin address.',
+      serverUnavailableAtAddress: 'Could not reach a Jellyfin server at this address. Check address and try again.',
+      connectTv: 'Connect this TV to your Jellyfin server.',
+      httpServerAddress: 'HTTP server address',
+      httpNetworkWarning: 'HTTP is recommended only within your local network. It is not encrypted and may expose traffic on public or untrusted networks.',
+      httpCannotVerify: 'This HTTPS launcher cannot verify an HTTP server before opening it.',
+      continueToServer: 'Continue to this server?',
+      cancel: 'Cancel',
+      continue: 'Continue'
+    },
+    ru: {
+      startingJellyfin: 'Запуск Jellyfin',
+      checkingJellyfinServer: 'Проверка сервера Jellyfin',
+      jellyfin: 'Jellyfin',
+      serverAddress: 'Адрес сервера',
+      connect: 'Подключиться',
+      jellyfinServerUnavailable: 'Сервер Jellyfin недоступен',
+      checkServerAddress: 'Проверьте адрес сервера и попробуйте снова.',
+      savedServerUnavailable: 'Не удалось подключиться к серверу Jellyfin. Возможно, сервер выключен, недоступен из сети или указан неверный адрес.',
+      enterServerAddress: 'Введите адрес сервера Jellyfin.',
+      requiresHttps: 'Для этого launcher требуется HTTPS-адрес Jellyfin.',
+      serverUnavailableAtAddress: 'Не удалось найти сервер Jellyfin по этому адресу. Проверьте адрес и попробуйте снова.',
+      connectTv: 'Подключите этот телевизор к вашему серверу Jellyfin.',
+      httpServerAddress: 'Адрес HTTP-сервера',
+      httpNetworkWarning: 'HTTP рекомендуется использовать только в локальной сети. Соединение не шифруется и может раскрыть данные в публичных или недоверенных сетях.',
+      httpCannotVerify: 'Этот HTTPS launcher не может проверить HTTP-сервер перед открытием.',
+      continueToServer: 'Продолжить подключение к этому серверу?',
+      cancel: 'Отмена',
+      continue: 'Продолжить'
+    }
+  };
+  var activeLocale = detectLocale();
+  var dictionary = translations[activeLocale] || translations.en;
   var storageKey = 'jellyfinTvLauncherServerUrl';
   var splashDuration = 1500;
   var splash = document.getElementById('startup-splash');
@@ -9,17 +53,89 @@
   var title = document.getElementById('screen-title');
   var description = document.getElementById('screen-description');
   var form = document.getElementById('connection-form');
+  var serverAddressLabel = document.getElementById('server-address-label');
   var input = document.getElementById('server-address');
   var button = document.getElementById('connect-button');
   var buttonLabel = button.getElementsByTagName('span')[0];
   var spinner = button.getElementsByTagName('span')[1];
   var error = document.getElementById('connection-error');
   var httpWarning = document.getElementById('http-warning');
+  var httpWarningTitle = document.getElementById('http-warning-title');
+  var httpWarningDescription = document.getElementById('http-warning-description');
+  var httpWarningVerification = document.getElementById('http-warning-verification');
+  var httpWarningContinue = document.getElementById('http-warning-continue');
   var httpCancelButton = document.getElementById('http-cancel-button');
   var httpContinueButton = document.getElementById('http-continue-button');
   var splashFinished = false;
   var savedServerUrl = readSavedServerUrl();
   var pendingHttpServerUrl = '';
+
+  setDocumentLanguage();
+  applyTranslations();
+
+  function detectLocale() {
+    var locale;
+
+    try {
+      if (typeof navigator === 'undefined') {
+        return 'en';
+      }
+
+      if (navigator.languages && typeof navigator.languages[0] === 'string') {
+        locale = navigator.languages[0];
+      }
+
+      if (!locale && typeof navigator.language === 'string') {
+        locale = navigator.language;
+      }
+
+      if (!locale && typeof navigator.userLanguage === 'string') {
+        locale = navigator.userLanguage;
+      }
+
+      return /^ru(?:[-_]|$)/i.test(locale) ? 'ru' : 'en';
+    } catch (exception) {
+      return 'en';
+    }
+  }
+
+  function setDocumentLanguage() {
+    try {
+      document.documentElement.lang = activeLocale;
+    } catch (exception) {
+      activeLocale = 'en';
+      dictionary = translations.en;
+    }
+  }
+
+  function t(key) {
+    var value;
+
+    try {
+      value = dictionary[key];
+      if (typeof value !== 'string') {
+        value = translations.en[key];
+      }
+
+      return typeof value === 'string' ? value : typeof key === 'string' ? key : '';
+    } catch (exception) {
+      return typeof key === 'string' ? key : '';
+    }
+  }
+
+  function applyTranslations() {
+    splashStatus.textContent = t('startingJellyfin');
+    title.textContent = t('jellyfin');
+    description.textContent = t('connectTv');
+    serverAddressLabel.textContent = t('serverAddress');
+    buttonLabel.textContent = t('connect');
+    httpWarningTitle.textContent = t('httpServerAddress');
+    httpWarningDescription.textContent = t('httpNetworkWarning');
+    httpWarningVerification.textContent = t('httpCannotVerify');
+    httpWarningContinue.textContent = t('continueToServer');
+    httpCancelButton.textContent = t('cancel');
+    httpContinueButton.textContent = t('continue');
+  }
 
   function readSavedServerUrl() {
     try {
@@ -136,12 +252,12 @@
   function showConnectionForm(unavailable) {
     splash.style.display = 'none';
     screen.hidden = false;
-    title.textContent = unavailable ? 'Jellyfin server is unavailable' : 'Jellyfin';
-    description.textContent = unavailable ? 'Check the server address and try again.' : 'Connect this TV to your Jellyfin server.';
+    title.textContent = unavailable ? t('jellyfinServerUnavailable') : t('jellyfin');
+    description.textContent = unavailable ? t('checkServerAddress') : t('connectTv');
     input.value = savedServerUrl;
 
     if (unavailable) {
-      showError('Could not reach this Jellyfin server. It may be offline, blocked by CORS, or use an invalid address.');
+      showError(t('savedServerUnavailable'));
     }
 
     input.focus();
@@ -181,7 +297,7 @@
       if (checkComplete) {
         finishStartup(checkSuccess);
       } else {
-        splashStatus.textContent = 'Checking Jellyfin server';
+        splashStatus.textContent = t('checkingJellyfinServer');
       }
     }, splashDuration);
   }
@@ -194,7 +310,7 @@
     serverUrl = normalizeServerUrl(input.value);
 
     if (!serverUrl) {
-      showError('Enter your Jellyfin server address.');
+      showError(t('enterServerAddress'));
       input.focus();
       return;
     }
@@ -213,7 +329,7 @@
       }
 
       setLoading(false);
-      showError('Could not reach a Jellyfin server at this address. Check address and try again.');
+      showError(t('serverUnavailableAtAddress'));
       input.focus();
     });
   });

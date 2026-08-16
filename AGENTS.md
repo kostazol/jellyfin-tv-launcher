@@ -27,6 +27,10 @@ Keep the project deliberately small and static:
 
 Preserve compatibility with older Smart TV browsers. Prefer simple browser APIs and graceful fallbacks over modern abstractions.
 
+## Localization
+
+The launcher uses static in-browser localization with no backend or translation requests. It uses Russian for `ru*` browser locales and English for every other locale and all locale-detection errors.
+
 ## Important UX behavior
 
 Preserve the TV startup experience:

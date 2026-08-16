@@ -25,7 +25,7 @@
       <h1 id="screen-title">Jellyfin</h1>
       <p id="screen-description">Connect this TV to your Jellyfin server.</p>
       <form id="connection-form" novalidate>
-        <label for="server-address">Server address</label>
+        <label id="server-address-label" for="server-address">Server address</label>
         <input id="server-address" name="server-address" type="url" inputmode="url" autocomplete="url" placeholder="https://jellyfin.example.com" spellcheck="false" required>
         <p id="connection-error" class="error" role="alert" aria-live="assertive" hidden></p>
         <button id="connect-button" type="submit"><span class="button-label">Connect</span><span class="spinner" aria-hidden="true" hidden></span></button>
@@ -36,8 +36,8 @@
     <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="http-warning-title" aria-describedby="http-warning-description">
       <h2 id="http-warning-title">HTTP server address</h2>
       <p id="http-warning-description">HTTP is recommended only within your local network. It is not encrypted and may expose traffic on public or untrusted networks.</p>
-      <p>This HTTPS launcher cannot verify an HTTP server before opening it.</p>
-      <p>Continue to this server?</p>
+      <p id="http-warning-verification">This HTTPS launcher cannot verify an HTTP server before opening it.</p>
+      <p id="http-warning-continue">Continue to this server?</p>
       <div class="dialog-actions">
         <button id="http-cancel-button" class="secondary-button" type="button">Cancel</button>
         <button id="http-continue-button" type="button">Continue</button>
