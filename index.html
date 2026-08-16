@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10131f">
+  <title>Jellyfin TV Launcher</title>
+  <link rel="preload" href="assets/jellyfin-banner.svg" as="image" type="image/svg+xml">
+  <style>
+    html, body { width: 100%; min-height: 100%; margin: 0; background: #10131f; }
+    #startup-splash { align-items: center; background: radial-gradient(ellipse at center, #20294a 0%, #10131f 62%); display: flex; height: 100vh; justify-content: center; overflow: hidden; position: fixed; width: 100%; z-index: 10; }
+    #startup-logo { animation: splash-logo 1500ms cubic-bezier(.22, 1, .36, 1) both; max-width: 52vw; width: 500px; }
+    @keyframes splash-logo { from { opacity: 0; transform: scale(2); } to { opacity: 1; transform: scale(1); } }
+  </style>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="startup-splash" role="status" aria-live="polite">
+    <img id="startup-logo" src="assets/jellyfin-banner.svg" alt="Jellyfin">
+    <p id="startup-status">Starting Jellyfin</p>
+  </div>
+  <main id="connection-screen" hidden>
+    <section class="connection-card" aria-labelledby="screen-title">
+      <img class="brand" src="assets/jellyfin-banner.svg" alt="Jellyfin">
+      <h1 id="screen-title">Jellyfin</h1>
+      <p id="screen-description">Connect this TV to your Jellyfin server.</p>
+      <form id="connection-form" novalidate>
+        <label for="server-address">Server address</label>
+        <input id="server-address" name="server-address" type="url" inputmode="url" autocomplete="url" placeholder="https://jellyfin.example.com" spellcheck="false" required>
+        <p id="connection-error" class="error" role="alert" aria-live="assertive" hidden></p>
+        <button id="connect-button" type="submit"><span class="button-label">Connect</span><span class="spinner" aria-hidden="true" hidden></span></button>
+      </form>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

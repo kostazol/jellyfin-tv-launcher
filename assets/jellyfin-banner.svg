@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 768 256" role="img" aria-labelledby="title">
+  <title id="title">Jellyfin</title>
+  <defs>
+    <linearGradient id="jellyfin-gradient" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#aa5cc3"/>
+      <stop offset="1" stop-color="#00a4dc"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#jellyfin-gradient)" fill-rule="evenodd" d="M128 12C96 12 16 190 30 220s182 30 196 0S160 12 128 12Zm0 43c20 0 76 120 66 140s-122 20-132 0S108 55 128 55Zm0 43c-10 0-40 72-35 84s65 12 70 0-25-84-35-84Z"/>
+  <text x="260" y="158" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="104" font-weight="400">Jellyfin</text>
+</svg>
