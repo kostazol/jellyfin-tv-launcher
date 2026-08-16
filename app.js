@@ -299,6 +299,17 @@
     event.preventDefault();
   }
 
+  function interruptStartup(event) {
+    if (startupInterrupted || !savedServerUrl || !screen.hidden) {
+      return false;
+    }
+
+    event.preventDefault();
+    startupInterrupted = true;
+    showConnectionForm(false);
+    return true;
+  }
+
   function showConnectionForm(unavailable) {
     splash.style.display = 'none';
     screen.hidden = false;
@@ -405,15 +416,16 @@
   });
 
   document.addEventListener('keydown', function (event) {
-    if (splashFinished || startupInterrupted || !savedServerUrl || !isHttpOnSecurePage(savedServerUrl)) {
-      handleDirectionalNavigation(event);
+    if (interruptStartup(event)) {
       return;
     }
 
-    event.preventDefault();
-    startupInterrupted = true;
-    showConnectionForm(false);
+    handleDirectionalNavigation(event);
   });
+
+  window.addEventListener('keydown', interruptStartup);
+  window.addEventListener('keyup', interruptStartup);
+  window.addEventListener('keypress', interruptStartup);
 
   beginStartup();
 }());

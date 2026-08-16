@@ -12,7 +12,7 @@ HTTPS Jellyfin URL is recommended. HTTP address requires confirmation and should
 
 Launcher uses static browser localization: Russian for `ru*` locales, English for all other locales and locale-detection failures. No backend or translation requests are required.
 
-Saved HTTP servers open automatically. To change a saved HTTP address, press any remote button during startup splash; launcher cancels redirect and shows connection form with saved address. To change a saved HTTPS address, make current server unavailable, for example by temporarily disconnecting TV from internet.
+Saved servers open automatically. To change a saved address, press any remote button during startup splash or server check; launcher cancels redirect and shows connection form with saved address.
 
 ## Русский
 
@@ -24,4 +24,4 @@ Saved HTTP servers open automatically. To change a saved HTTP address, press any
 
 Локализация статическая: русский язык используется для locale `ru*`, английский — для остальных locale и ошибок определения языка. Backend и запросы переводов не требуются.
 
-Сохранённые HTTP-серверы открываются автоматически. Чтобы изменить сохранённый HTTP-адрес, нажмите любую кнопку пульта во время splash: launcher отменит перенаправление и покажет форму подключения с сохранённым адресом. Чтобы изменить сохранённый HTTPS-адрес, сделайте текущий сервер недоступным, например временно отключив телевизор от интернета.
+Сохранённые серверы открываются автоматически. Чтобы изменить сохранённый адрес, нажмите любую кнопку пульта во время splash или проверки сервера: launcher отменит перенаправление и покажет форму подключения с сохранённым адресом.
