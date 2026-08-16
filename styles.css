@@ -28,7 +28,8 @@ body {
 }
 
 #connection-screen[hidden],
-.spinner[hidden] {
+.spinner[hidden],
+.dialog-backdrop[hidden] {
   display: none;
 }
 
@@ -106,6 +107,10 @@ button {
   padding: 0 36px;
 }
 
+.secondary-button {
+  background: #313a56;
+}
+
 input:focus,
 button:focus {
   box-shadow: 0 0 0 5px #fff, 0 0 0 9px #00a4dc;
@@ -134,6 +139,49 @@ button:disabled {
   height: 27px;
   vertical-align: middle;
   width: 27px;
+}
+
+.dialog-backdrop {
+  align-items: center;
+  background: rgba(0, 0, 0, .72);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 48px;
+  position: fixed;
+  z-index: 20;
+}
+
+.dialog {
+  background: #202941;
+  border: 2px solid #66779f;
+  border-radius: 14px;
+  max-width: 680px;
+  padding: 38px;
+  width: 100%;
+}
+
+.dialog h2 {
+  font-size: 32px;
+  margin: 0 0 22px;
+}
+
+.dialog p {
+  color: #d5dcf2;
+  font-size: 21px;
+  line-height: 1.45;
+  margin: 0 0 18px;
+}
+
+.dialog-actions {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-end;
+  margin-top: 30px;
+}
+
+.dialog-actions button {
+  margin-top: 0;
 }
 
 @keyframes spinner {
@@ -170,5 +218,29 @@ button:disabled {
 
   button {
     width: 100%;
+  }
+
+  .dialog-backdrop {
+    padding: 28px;
+  }
+
+  .dialog {
+    padding: 28px;
+  }
+
+  .dialog h2 {
+    font-size: 27px;
+  }
+
+  .dialog p {
+    font-size: 18px;
+  }
+
+  .dialog-actions {
+    display: block;
+  }
+
+  .dialog-actions button {
+    margin-top: 16px;
   }
 }

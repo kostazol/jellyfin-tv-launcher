@@ -32,6 +32,18 @@
       </form>
     </section>
   </main>
+  <div id="http-warning" class="dialog-backdrop" role="presentation" hidden>
+    <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="http-warning-title" aria-describedby="http-warning-description">
+      <h2 id="http-warning-title">HTTP server address</h2>
+      <p id="http-warning-description">HTTP is recommended only within your local network. It is not encrypted and may expose traffic on public or untrusted networks.</p>
+      <p>This HTTPS launcher cannot verify an HTTP server before opening it.</p>
+      <p>Continue to this server?</p>
+      <div class="dialog-actions">
+        <button id="http-cancel-button" class="secondary-button" type="button">Cancel</button>
+        <button id="http-continue-button" type="button">Continue</button>
+      </div>
+    </section>
+  </div>
   <script src="app.js"></script>
 </body>
 </html>

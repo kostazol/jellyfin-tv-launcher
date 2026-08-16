@@ -6,4 +6,4 @@ Small Smart TV / VIDAA launcher, not Jellyfin client. `jellyfin-web` is not incl
 
 Only Jellyfin base server URL is stored locally in browser `localStorage`. No credentials, tokens, API keys, analytics, proxying, or external runtime dependencies.
 
-Use HTTPS Jellyfin URL because Vercel launcher is HTTPS. Deployment runs from `main` through Vercel Git integration when integration is connected.
+HTTPS Jellyfin URL is recommended. HTTP address requires confirmation and should only be used on local network; HTTPS launcher cannot validate HTTP server before redirect because browsers block mixed-content requests. Deployment runs from `main` through Vercel Git integration when integration is connected.

@@ -14,8 +14,12 @@
   var buttonLabel = button.getElementsByTagName('span')[0];
   var spinner = button.getElementsByTagName('span')[1];
   var error = document.getElementById('connection-error');
+  var httpWarning = document.getElementById('http-warning');
+  var httpCancelButton = document.getElementById('http-cancel-button');
+  var httpContinueButton = document.getElementById('http-continue-button');
   var splashFinished = false;
   var savedServerUrl = readSavedServerUrl();
+  var pendingHttpServerUrl = '';
 
   function readSavedServerUrl() {
     try {
@@ -67,11 +71,6 @@
   function checkServer(serverUrl, callback) {
     var request;
     var completed = false;
-
-    if (isHttpOnSecurePage(serverUrl)) {
-      callback(false, 'https-required');
-      return;
-    }
 
     try {
       request = new XMLHttpRequest();
@@ -128,6 +127,12 @@
     error.hidden = false;
   }
 
+  function showHttpWarning(serverUrl) {
+    pendingHttpServerUrl = serverUrl;
+    httpWarning.hidden = false;
+    httpCancelButton.focus();
+  }
+
   function showConnectionForm(unavailable) {
     splash.style.display = 'none';
     screen.hidden = false;
@@ -157,13 +162,18 @@
 
     if (savedServerUrl) {
       savedServerUrl = normalizeServerUrl(savedServerUrl);
-      checkServer(savedServerUrl, function (success) {
+      if (isHttpOnSecurePage(savedServerUrl)) {
         checkComplete = true;
-        checkSuccess = success;
-        if (splashFinished) {
-          finishStartup(checkSuccess);
-        }
-      });
+        checkSuccess = true;
+      } else {
+        checkServer(savedServerUrl, function (success) {
+          checkComplete = true;
+          checkSuccess = success;
+          if (splashFinished) {
+            finishStartup(checkSuccess);
+          }
+        });
+      }
     }
 
     window.setTimeout(function () {
@@ -190,8 +200,7 @@
     }
 
     if (isHttpOnSecurePage(serverUrl)) {
-      showError('This launcher requires an HTTPS Jellyfin address.');
-      input.focus();
+      showHttpWarning(serverUrl);
       return;
     }
 
@@ -204,9 +213,25 @@
       }
 
       setLoading(false);
-      showError(reason === 'https-required' ? 'This launcher requires an HTTPS Jellyfin address.' : 'Could not reach a Jellyfin server at this address. Check address and try again.');
+      showError('Could not reach a Jellyfin server at this address. Check address and try again.');
       input.focus();
     });
+  });
+
+  httpCancelButton.addEventListener('click', function () {
+    pendingHttpServerUrl = '';
+    httpWarning.hidden = true;
+    input.focus();
+  });
+
+  httpContinueButton.addEventListener('click', function () {
+    if (!pendingHttpServerUrl) {
+      return;
+    }
+
+    setLoading(true);
+    saveServerUrl(pendingHttpServerUrl);
+    openServer(pendingHttpServerUrl);
   });
 
   beginStartup();
