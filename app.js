@@ -280,7 +280,6 @@
       savedServerUrl = normalizeServerUrl(savedServerUrl);
       if (isHttpOnSecurePage(savedServerUrl)) {
         checkComplete = true;
-        checkSuccess = true;
       } else {
         checkServer(savedServerUrl, function (success) {
           checkComplete = true;
