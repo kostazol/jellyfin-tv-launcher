@@ -41,9 +41,8 @@ body {
 
 .brand {
   display: block;
-  margin: 0 auto 42px;
-  max-width: 420px;
-  width: 62%;
+  margin: 0 auto 28px;
+  width: 150px;
 }
 
 h1 {
@@ -105,6 +104,10 @@ button {
   margin-top: 26px;
   min-width: 220px;
   padding: 0 36px;
+}
+
+#connect-button {
+  width: 100%;
 }
 
 .secondary-button {
@@ -197,7 +200,7 @@ button:disabled {
 
   .brand {
     margin-bottom: 30px;
-    width: 80%;
+    width: 130px;
   }
 
   h1 {

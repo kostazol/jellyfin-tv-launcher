@@ -66,6 +66,10 @@
   var httpWarningContinue = document.getElementById('http-warning-continue');
   var httpCancelButton = document.getElementById('http-cancel-button');
   var httpContinueButton = document.getElementById('http-continue-button');
+  var remoteLeft = getRemoteKeyCode('VK_LEFT', 37);
+  var remoteUp = getRemoteKeyCode('VK_UP', 38);
+  var remoteRight = getRemoteKeyCode('VK_RIGHT', 39);
+  var remoteDown = getRemoteKeyCode('VK_DOWN', 40);
   var splashFinished = false;
   var startupInterrupted = false;
   var savedServerUrl = readSavedServerUrl();
@@ -121,6 +125,14 @@
       return typeof value === 'string' ? value : typeof key === 'string' ? key : '';
     } catch (exception) {
       return typeof key === 'string' ? key : '';
+    }
+  }
+
+  function getRemoteKeyCode(name, fallback) {
+    try {
+      return typeof window[name] === 'number' ? window[name] : fallback;
+    } catch (exception) {
+      return fallback;
     }
   }
 
@@ -250,6 +262,43 @@
     httpCancelButton.focus();
   }
 
+  function handleDirectionalNavigation(event) {
+    var keyCode = event.keyCode || event.which;
+    var activeElement = document.activeElement;
+    var isArrowKey = keyCode === remoteLeft || keyCode === remoteUp || keyCode === remoteRight || keyCode === remoteDown;
+
+    if (!isArrowKey) {
+      return;
+    }
+
+    if (!httpWarning.hidden) {
+      if (activeElement === httpCancelButton && (keyCode === remoteRight || keyCode === remoteDown)) {
+        httpContinueButton.focus();
+      } else if (activeElement === httpContinueButton && (keyCode === remoteLeft || keyCode === remoteUp)) {
+        httpCancelButton.focus();
+      } else {
+        return;
+      }
+
+      event.preventDefault();
+      return;
+    }
+
+    if (screen.hidden) {
+      return;
+    }
+
+    if (activeElement === input) {
+      button.focus();
+    } else if (activeElement === button) {
+      input.focus();
+    } else {
+      return;
+    }
+
+    event.preventDefault();
+  }
+
   function showConnectionForm(unavailable) {
     splash.style.display = 'none';
     screen.hidden = false;
@@ -356,7 +405,8 @@
   });
 
   document.addEventListener('keydown', function (event) {
-    if (splashFinished || !savedServerUrl || !isHttpOnSecurePage(savedServerUrl)) {
+    if (splashFinished || startupInterrupted || !savedServerUrl || !isHttpOnSecurePage(savedServerUrl)) {
+      handleDirectionalNavigation(event);
       return;
     }
 

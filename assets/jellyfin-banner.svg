@@ -1,11 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 768 256" role="img" aria-labelledby="title">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
   <title id="title">Jellyfin</title>
   <defs>
-    <linearGradient id="jellyfin-gradient" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="jellyfin-gradient" x1="110.25" y1="213.3" x2="496.14" y2="436.09" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#aa5cc3"/>
       <stop offset="1" stop-color="#00a4dc"/>
     </linearGradient>
   </defs>
-  <path fill="url(#jellyfin-gradient)" fill-rule="evenodd" d="M128 12C96 12 16 190 30 220s182 30 196 0S160 12 128 12Zm0 43c20 0 76 120 66 140s-122 20-132 0S108 55 128 55Zm0 43c-10 0-40 72-35 84s65 12 70 0-25-84-35-84Z"/>
-  <text x="260" y="158" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="104" font-weight="400">Jellyfin</text>
+  <path fill="url(#jellyfin-gradient)" d="M261.42,201.62c-20.44,0-86.24,119.29-76.2,139.43s142.48,19.92,152.4,0S281.86,201.63,261.42,201.62Z"/>
+  <path fill="url(#jellyfin-gradient)" d="M261.42,23.3C199.83,23.3,1.57,382.73,31.8,443.43s429.34,60,459.24,0S323,23.3,261.42,23.3ZM411.9,390.76c-19.59,39.33-281.08,39.77-300.9,0S221.1,115.48,261.45,115.48,431.49,351.42,411.9,390.76Z"/>
 </svg>
